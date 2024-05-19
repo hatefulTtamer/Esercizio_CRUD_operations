@@ -1,0 +1,6 @@
+spring:
+    application:
+        name: esercizio-crud-operations
+    jackson:
+        serialization:
+            fail-on-empty-beans: false
