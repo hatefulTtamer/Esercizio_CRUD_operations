@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CarService {
@@ -20,16 +21,27 @@ public class CarService {
         return carRepo.findAll();
     }
 
-    public Car get(long id) {
+    public Optional<Car> get(long id) {
         if (!carRepo.existsById(id)) {
-            return carRepo.saveAndFlush(new Car());
+            return Optional.empty();
         } else {
-            return carRepo.getReferenceById(id);
+            return carRepo.findById(id);
         }
     }
 
-    public void delete (long id) {
-        carRepo.delete(carRepo.getReferenceById(id));
+    public Optional<Car> update(long id, String string) {
+        if (!carRepo.existsById(id)) {
+            return Optional.empty();
+        } else {
+            Optional<Car> optionalCar = carRepo.findById(id);
+            Car car = optionalCar.get();
+            car.setType(string);
+            return Optional.of(car);
+        }
+    }
+
+    public void delete(long id) {
+        carRepo.deleteById(id);
     }
 
     public void deleteAll() {
